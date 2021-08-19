@@ -27,12 +27,14 @@ class AppointmentServiceTest {
 	@InjectMocks
 	AppointmentServices appointments;
 
+	//read 
 	@Test
 	void testRetrieveAllAppointmrnts() {
 		when(repo.findAll()).thenReturn(Arrays.asList(new Appointment(1,"hu","h@gmail.com","mumbai",1234567890L,120f)));
 		appointments.retrieveAllAppointments();
 	}
 	
+	//create
 	void testSavedAppointments() {
 		Appointment  a1= new Appointment(2,"mu","m@gmail.com","delhi",1234567890L,67f);
 		when(repo.save(a1)).thenReturn(a1);
@@ -40,12 +42,21 @@ class AppointmentServiceTest {
 		assertEquals(a1.getId(), saved.getId());
 	}
 	
+	//update
 	void testUpdateAppoinments() {
 		Optional<Appointment> a1 = Optional.of(new Appointment(2,"mu","m@gmail.com","delhi",1234567890L,67f));
 		when(repo.findById(2)).thenReturn(a1);
-		Appointment app=appointments.updateItem(2);
-		assertNotEquals(a1.get().getId(), app.getId());
+		Appointment app=appointments.updateAppointment(2);
+		assertEquals(a1.get().getId(), app.getId());
+		assertNotEquals(a1.get().getNumber(),app.getNumber());
 	}
 	
+	//delete
+	void testDeleteAppointment() {
+		Optional<Appointment> a1 = Optional.of(new Appointment(2,"mu","m@gmail.com","delhi",1234567890L,67f));
+		when(repo.findById(2)).thenReturn(a1).thenReturn(null);
+		Appointment app= appointments.deleteAppointment(2);
+		assertNull(app);
+	}
 	
 }

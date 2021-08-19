@@ -31,9 +31,21 @@ public class AppointmentServices {
 		return repository.save(a1);
 	}
 
-	public Appointment updateItem(int id) {
+	public Appointment updateAppointment(int id) {
 		Optional<Appointment> app = repository.findById(id);
 		return new Appointment(app.get().getId(),"mu","m@gmail.com","mumbai",50L,500f);
+	}
+
+	
+
+	public Appointment deleteAppointment(int i) {
+		Optional<Appointment> app = repository.findById(i);
+		if(app.get() != null) {
+			repository.deleteById(i);
+		}
+		Optional<Appointment> removed = repository.findById(i);
+		
+		return removed.get();
 	}
 	
 	
