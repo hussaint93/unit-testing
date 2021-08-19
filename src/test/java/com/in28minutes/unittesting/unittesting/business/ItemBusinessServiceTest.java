@@ -1,7 +1,10 @@
 package com.in28minutes.unittesting.unittesting.business;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -46,8 +49,13 @@ class ItemBusinessServiceTest {
 	void testSaveItem() {
 		Item i1 = new Item(4, "bkvjfk", 40, 400);
 		when(repo.save(i1)).thenReturn(i1);
-		Item ju = business.saveItem(i1);
-		assertEquals("item2",ju.getName());
+		Item saved = null;
+		try {
+			saved = business.saveItem(i1);
+		} catch (ParameterMissingException e) {
+			e.printStackTrace();
+		}
+		assertEquals("item2",saved.getName());
 	}
 
 	@Test
@@ -57,10 +65,28 @@ class ItemBusinessServiceTest {
 
 	}
 
-//	@Test
-//	void testUpdateItem() {
-//	
-//		business.updateItem(item);
-//	}
+	@Test
+	void testUpdateItem() {
+		Optional<Item> i1 = Optional.of(new Item(2,"kdnnd",20,200));
+		when(repo.findById(2)).thenReturn(i1);
+		Item item=business.updateItem(2);
+		assertNotEquals(i1.get().getName(), item.getName());
+	}
+	
+	
+	
+	@Test 
+	void TestItemWithNoName() {
+		Item i1= new Item(5,null,90,678);
+		Item saved=null;
+		when(repo.save(i1)).thenReturn(i1);
+		try {
+			 saved = business.saveItem(i1);		
+		}
+		catch(ParameterMissingException e) {
+			assertNotNull(e);
+			assertEquals(ParameterMissingException.class,e.getClass(),"parameter missing");	
+		};
+	}
 
 }

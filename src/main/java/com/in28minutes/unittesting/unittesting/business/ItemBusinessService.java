@@ -1,6 +1,7 @@
 package com.in28minutes.unittesting.unittesting.business;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,8 +37,16 @@ public class ItemBusinessService {
 
 	
 
-	public Item saveItem(Item i1) {
+	public Item saveItem(Item i1) throws ParameterMissingException {
+		if(i1.getName()==null) {
+			throw new ParameterMissingException();
+		}
 		return repository.save(i1);	
+	}
+
+	public Item updateItem(int id) {
+			Optional<Item> item = repository.findById(id);
+			return new Item(item.get().getId(),"itemupdated",50,500);
 	}
 	
 }
