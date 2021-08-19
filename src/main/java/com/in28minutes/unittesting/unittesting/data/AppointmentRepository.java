@@ -7,5 +7,4 @@ import com.in28minutes.unittesting.unittesting.model.Item;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer>{
 
-	
 }

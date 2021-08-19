@@ -36,4 +36,5 @@ public class AppointmentServices {
 		return new Appointment(app.get().getId(),"mu","m@gmail.com","mumbai",50L,500f);
 	}
 	
+	
 }
